@@ -6,9 +6,9 @@ import { AuthEmail } from '../emails/AuthEmail'
 export class MessageController {
     static SendMails = async (req: Request, res: Response) => {
         try {
-            const { email, nombre, link } = req.body
+            const { email, nombre, url } = req.body
 
-            await AuthEmail.SendEmail({ email, nombre, link })
+            await AuthEmail.SendEmail({ email, nombre, url })
 
             res.status(200).send('Message sent')
         } catch (error) {
@@ -48,8 +48,8 @@ export class MessageController {
             }
 
             for (const message of messages) {
-                const { email, nombre, link } = message
-                await AuthEmail.SendEmail({ email, nombre, link })
+                const { email, nombre, url } = message
+                await AuthEmail.SendEmail({ email, nombre, url })
 
                 await message.destroy()
                 console.log(`Email sent and message deleted for: ${message.nombre}`)

@@ -3,11 +3,11 @@ import colors from "colors"
 interface IEmail {
     email: string,
     nombre: string,
-    link: string
+    url: string
 }
 
 export class AuthEmail {
-    static SendEmail = async (user: Pick<IEmail, 'email' | 'nombre' | 'link'>) => {
+    static SendEmail = async (user: Pick<IEmail, 'email' | 'nombre' | 'url'>) => {
         const info = await transport.sendMail({
             from: `BiblioImage <admin@bibioimage.com>`,
             to: user.email,
@@ -22,7 +22,7 @@ export class AuthEmail {
                     </div>
                     <p>Se te informa que tu imagen se ha subido con exito, aquí está su enlace:
                         <span style="font-weight: bold; cursor: pointer;">
-                            <a style="color: rgb(71, 61, 255);" href="${user.link}">${user.link}</a>
+                            <a style="color: rgb(71, 61, 255);" href="${user.url}">${user.url}</a>
                         </span>
                     </p>
                 </div>

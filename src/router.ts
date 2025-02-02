@@ -11,7 +11,7 @@ router.post('/',
         .isEmail().withMessage('El campo email debe ser un email valido')
         .notEmpty().withMessage('El campo email es requerido'),
     body('nombre').notEmpty().withMessage('El campo nombre es requerido'),
-    body('link').notEmpty().withMessage('El campo link es requerido'),
+    body('url').notEmpty().withMessage('El campo url es requerido'),
     handleInputErrors,
     MessageController.SendMails
 )
@@ -22,7 +22,7 @@ router.post('/queue',
         .notEmpty().withMessage('El campo email es requerido'),
     body('nombre')
         .notEmpty().withMessage('El campo nombre es requerido'),
-    body('link').notEmpty().withMessage('El campo link es requerido'),
+    body('url').notEmpty().withMessage('El campo link es requerido'),
     handleInputErrors,
     MessageController.QueueMessage
 )

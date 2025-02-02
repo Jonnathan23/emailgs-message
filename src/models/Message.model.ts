@@ -14,7 +14,7 @@ class Message extends Model {
     declare nombre: string;
 
     @Column({ type: DataType.STRING(100) })
-    declare link: string;
+    declare url: string;
 }
 
 export default Message
