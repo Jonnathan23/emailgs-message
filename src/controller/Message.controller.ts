@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import Message from '../models/Message.model'
 import { AuthEmail } from '../emails/AuthEmail'
 
+
 export class MessageController {
     static SendMails = async (req: Request, res: Response) => {
         try {
@@ -41,7 +42,10 @@ export class MessageController {
         try {
             const messages = await Message.findAll()
 
-            if (messages.length === 0 || messages === null || messages === undefined) throw new Error('No messages in queue')
+            if (messages.length === 0 || messages === null || messages === undefined) {
+                console.log('No messages in queue')
+                return
+            }
 
             for (const message of messages) {
                 const { email, nombre, link } = message

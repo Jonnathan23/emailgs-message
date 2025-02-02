@@ -8,33 +8,26 @@ import colors from 'colors'
 import { router } from './router'
 import { MessageController } from './controller/Message.controller'
 import { QueryTypes } from 'sequelize'
+import { checkAndProcessMessages } from './utils/utils'
 
 dotenv.config()
 
 export const connectDb = async () => {
     try {
-        await db.authenticate()
-        db.sync()
-        console.log(colors.bgGreen.white.bold('Base de datos conectada'))
+        await db.authenticate();
+        await db.sync({ alter: true }); // Asegura que la tabla esté sincronizada sin eliminar datos
+        console.log(colors.bgGreen.white.bold('Base de datos conectada'));
+       
+        // Ejecutar la función por primera vez
+        await checkAndProcessMessages(db);
 
-        // Verificar si la tabla Messages existe en pg_tables
-        const result: any[] = await db.query(
-            "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'Messages') as exists_table",
-            { type: QueryTypes.SELECT }
-        );
+        // Establecer intervalo de 3 segundos para seguir verificando
+        setInterval(() => checkAndProcessMessages(db), 3000);
 
-        const tableExists = result.length > 0 && result[0].exists_table;
-
-        if (tableExists) {
-            console.log(colors.bgBlue.white.bold('La tabla Messages existe, procesando mensajes...'));
-            await MessageController.ProcessQueue();
-        } else {
-            console.log(colors.bgYellow.white.bold('La tabla Messages aún no existe, no se procesarán mensajes.'));
-        }
     } catch (error) {
-        console.log(colors.bgRed.white.bold('Error al conectar la base de datos'))
+        console.log(colors.bgRed.white.bold('Error al conectar la base de datos'), error);
     }
-}
+};
 
 connectDb()
 
